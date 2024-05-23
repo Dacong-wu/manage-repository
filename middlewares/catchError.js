@@ -1,5 +1,4 @@
 const log4js = require('../utils/log4js')
-
 module.exports = async (ctx, next) => {
   try {
     var begin = Date.now()
@@ -10,7 +9,7 @@ module.exports = async (ctx, next) => {
     // 判断是否为token过期等问题
     var end = `${Date.now() - begin}ms`
     if (err.status) {
-      logInfo(ctx, end)
+      logError(ctx, end, err)
       ctx.status = err.status
     } else {
       logError(ctx, end, err)
@@ -43,7 +42,6 @@ function logError(ctx, time, err) {
   let data = {
     host: ctx.host,
     url: ctx.url,
-    err_message: err.message,
     err_stack: err.stack,
     body: ctx.request.body,
     agent: ctx.request.header[`user-agent`]
